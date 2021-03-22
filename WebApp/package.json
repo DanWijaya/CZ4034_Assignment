@@ -1,0 +1,24 @@
+{
+  "name": "solr-node-app",
+  "version": "1.0.0",
+  "description": "CZ4032 Assignment",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "solr": "cd .. && docker compose up",
+    "app": "concurrently \"npm run solr\" \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "prettier": "prettier --write \"./**/*.{js,json}\""
+  },
+  "author": "pentacode",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.0.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "solr-node": "1.0.13"
+  }
+}
