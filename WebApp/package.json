@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "solr": "cd .. && docker compose up",
-    "app": "concurrently \"npm run solr\" \"npm run server\" \"npm run client\"",
+    "solr": "docker compose up",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
+    "app": "concurrently \"npm run solr\" \"npm run server\" \"npm run client\"",
     "prettier": "prettier --write \"./**/*.{js,json}\""
   },
   "author": "pentacode",
