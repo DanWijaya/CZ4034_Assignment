@@ -1,7 +1,7 @@
 # CZ4034_Assignment
 
 Prerequisite: 
-1. Node.JS is installed
+1. Node.JS and npm are installed
 2. Docker is installed
 
 To run the project. 
