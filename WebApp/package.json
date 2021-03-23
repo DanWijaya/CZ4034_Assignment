@@ -8,7 +8,7 @@
     "solr": "docker compose up",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "app": "concurrently \"npm run solr\" \"npm run server\" \"npm run client\"",
+    "app": "concurrently \"npm run server\" \"npm run client\"",
     "prettier": "prettier --write \"./**/*.{js,json}\""
   },
   "author": "pentacode",
