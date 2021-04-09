@@ -11,6 +11,12 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
      "dest":"_text_"}
 }' http://localhost:8983/solr/review_table/schema
 
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+  "add-copy-field":{
+     "source":"*",
+     "dest":"_text_"}
+}' http://localhost:8983/solr/product_table/schema
+
 docker exec -it newsolr post -c product_table /data/product_lists.csv
 
 docker exec -it newsolr post -c review_table /data/review_table.csv

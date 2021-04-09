@@ -4,7 +4,6 @@ import React from "react";
 export default function NavBar() {
   return (
     <AppBar
-      // position="absolute"
       style={{
         position: "fixed",
         top: "0",
@@ -13,10 +12,12 @@ export default function NavBar() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "flex-start"
+        alignItems: "flex-start",
       }}
     >
-      <Typography style={{marginLeft: "30px"}}> Welcome to CZ4034 app </Typography>
+      <Typography style={{ marginLeft: "30px" }}>
+        Welcome to Amazon Reviews app
+      </Typography>
     </AppBar>
   );
 }
