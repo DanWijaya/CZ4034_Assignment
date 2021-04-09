@@ -5,7 +5,7 @@ const SolrNode = require("solr-node");
 const solrClient = new SolrNode({
     host: "127.0.0.1",
     port: "8983",
-    core: "mycore",
+    core: "review_table",
     protocol: "http",
   });
 
@@ -17,10 +17,12 @@ const solrClient = new SolrNode({
     //     gender: query,
     //   };
     // Build a search query var
-    const searchQuery = solrClient.query().q(`${req.body.category}: ${req.body.query}`).addParams({
+    var query = req.body.query.replace(" ", "+");
+
+    const searchQuery = solrClient.query().q({"generic_product": query }).addParams({
       wt: "json",
       indent: true,
-    });
+    }).start(1).rows(50)
 
     solrClient.search(searchQuery, function (err, result) {
         if (err) {
@@ -29,11 +31,12 @@ const solrClient = new SolrNode({
         }
       
         const response = result.response;
-        console.log("Result: ", response);
+        // console.log("Result: ", response);
       
         if (response && response.docs) {
-          response.docs.forEach((doc) => {
-            console.log(doc);
+          console.log(response.docs.length)
+          response.docs.forEach((doc, idx) => {
+            console.log(idx);
           });
         }
     return res.status(200).json(response.docs)

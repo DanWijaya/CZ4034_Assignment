@@ -5,22 +5,15 @@ const queries = require("./api/queries");
 const bodyParser = require("body-parser");
 
 const app = express();
-var solrClient = new SolrNode({
-  host: "127.0.0.1",
-  port: "8983",
-  core: "mycore",
-  protocol: "http",
-});
+// var solrClient = new SolrNode({
+//   host: "127.0.0.1",
+//   port: "8983",
+//   core: "review_table",
+//   protocol: "http",
+// });
 
-// app.use("/api/get", queries);
 // Add One item
 // Solr adds ID to each document by default, however, if you specify an id, solr will use that instead.
-
-// const data = {
-//   website: 'Pomodoro Timer',
-//   url: 'http://www.pomofocus.io',
-//   author: 'Nobody',
-// };
 
 // solrClient.update(data, function(err, result) {
 //   if (err) {
@@ -30,22 +23,8 @@ var solrClient = new SolrNode({
 //   console.log('Response:', result.responseHeader);
 // });
 
-//-------------------------------------------------------------------------------------------
 
-// Add a bunch of docs
-people.forEach((person) => {
-  solrClient.update(person, function(err, result) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log('Response:', result.responseHeader);
-  });
-});
-
-//-------------------------------------------------------------------------------------------
-
-// // Delete
+// Delete
 // const stringQuery = 'id:2';    // delete document with id 2
 // const deleteAllQuery = '*';    // delete all
 // const objectQUery = {id: 'd7497504-22d9-4a22-9635-88dd437712ff'};   // Object query
@@ -101,7 +80,6 @@ app.use(
 
 
 // for parsing application/json
-// app.use(express.json());
 app.use(bodyParser.json())
 
 app.use("/api/query", queries)

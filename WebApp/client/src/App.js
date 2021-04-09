@@ -5,18 +5,21 @@ import {
   AppBar,
   Button,
   Grid,
+  Hidden,
   Link,
   TextField,
   IconButton,
   InputAdornment,
   Typography,
-  Paper
+  Paper,
+  Avatar
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import SearchIcon from '@material-ui/icons/Search';
 import NavBar from "./misc/NavBar";
 import { globalStyles } from "./misc/GlobalStyles";
-import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import RateReviewOutlinedIcon from '@material-ui/icons/RateReviewOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root:{
@@ -35,12 +38,20 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "flex-start"
   },
+  avatar:{
+    margin: "auto",
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  reviewIcon: {
+    margin: "auto",
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+  },
   searchField: {
     width: "60%",
   },
   contents: {
-    // display: "flex",
-    // justifyContent: "center",
     marginTop: "70px",
   },
   submitButton: {
@@ -63,6 +74,26 @@ const useStyles = makeStyles((theme) => ({
     padding: "15px",
     marginBottom: "12px"
   },
+  searchFilterBox: {
+    backgroundColor: theme.palette.primary.main,
+    color: "white"
+  },
+  categoryButton: {
+    backgroundColor: "white",
+    color: theme.palette.primary.main,
+    "&:hover": {
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
+    }
+  },
+  categoryButtonSelected: {
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    "&:hover": {
+      backgroundColor: theme.palette.primary.main,
+      color: "white",
+    }
+  }
 }));
 
 function App() {
@@ -71,10 +102,13 @@ function App() {
   const [query, setQuery] = React.useState("");
   const [result, setResult] = React.useState([]);
   const [category, setCategory] = React.useState("gender");
+  const [filter , setFilter] = React.useState("gender");
+  const [sortBy, setSortBy] = React.useState("gender");
 
   const handleSetQuery = (e) => {
-    setQuery(e.target.value);
+    setQuery(e.target.value)
   };
+
   const handleClearQuery = (e) => {
     setQuery("");
   };
@@ -98,11 +132,10 @@ function App() {
     })
   }
 
-  const categoriesList = [["first_name", "First Name"], ["gender", "Gender"]]
-  // let zoom = (( window.outerWidth - 10 ) / window.innerWidth);
+  const categoriesList = [["generic_product", "Generic Product"]]
+
   return (
     <div className={styles.root}>
-      <ThemeProvider theme={globalStyles}>
       <NavBar />
       <form onSubmit={onSubmit}>
       <Grid container justify="center" className={styles.contents}>
@@ -143,35 +176,121 @@ function App() {
         />
         </Grid>
         </form>
-      {/* <Divider variant="middle" className={styles.titleDivider} /> */}
-      <Grid container direction="column" spacing={2} style={{marginTop: "5px"}}>
-        <Grid item container>
-          <Grid item xs={2}>
-            <Grid item container direction="column" alignItems="center" spacing={2}> 
-              <Grid item>
-                <b>Category </b>
-              </Grid>
-              {categoriesList.map((cat) => (
-                  <Grid item>
-                  <Link href="#" onClick={handleCategory(cat[0])}>{cat[1]}</Link>
-                </Grid>
-          ))}
-          </Grid>
-          </Grid>
-          <Grid item xs={8}>
+      <Grid container spacing={2} style={{marginTop: "5px"}}>
+        {/* <Grid item container> */}
+        <Hidden mdUp>
+        <Grid item xs={9} >
             <Grid style={{maxHeight: (window.outerHeight - 150), overflow: 'auto'}}>
             {!result ? <Typography align="center"> Our Database does not have what you need :( </Typography> 
               :
             result.map((item) => (
               <Grid item>
               <Paper variant="outlined" className={styles.subjectPaper}>
-                <Grid container direction="column">
-                  <Grid item>First Name: {item.first_name} </Grid>
-                  <Grid item>Last Name: {item.last_name} </Grid>
-                  <Grid item>Email : {item.email}  </Grid>
-                  <Grid item>First Name: {item.first_name} </Grid>
-                </Grid>
+                
+                  <Grid item xs={2}>
+                    <Grid container justify="center">
+                    {!item.image ? 
+                      <RateReviewOutlinedIcon className={styles.avatar}/>
+                    :
+                  <a href={item.image} target="_blank">
+                    <Avatar variant="rounded" className={styles.avatar} src={item.image}/>
+                  </a> 
+                  }
+                  </Grid>
+                  </Grid>
+                  <Grid item container xs={10} style={{marginLeft: "20px"}}>
+                      <Grid container direction="column" spacing={1}>
+                        <Grid item>Product Name: {item.product} </Grid>
+                        <Grid item>Category: {item.generic_product} </Grid>
+                        <Grid item>Review Title : {item.review_title}  </Grid>
+                      </Grid>
+                    </Grid>
               </Paper>
+            </Grid>
+            )
+            )}
+            </Grid>
+          </Grid>
+        <Grid item xs={3}>
+          <Grid item container direction="column" alignItems="center" spacing={2}>
+              <Grid item>
+                <b>Category</b>
+              </Grid>
+              <Grid item container direction="column">
+                {categoriesList.map((cat) => (
+                    <Button variant="outlined" onClick={() => setCategory(cat[0])} className={category == cat[0]? styles.categoryButtonSelected :styles.categoryButton }>
+                      {cat[1]}
+                  </Button>
+                ))}
+              </Grid>
+          </Grid>
+          <Grid item container direction="column" alignItems="center" spacing={2}> 
+              <Grid item>
+                <b>Sort by </b>
+              </Grid>
+              <Grid item container direction="column">
+                {categoriesList.map((cat) => (
+                    <Button variant="outlined" onClick={() => setSortBy(cat[0])} className={sortBy == cat[0]? styles.categoryButtonSelected :styles.categoryButton }>
+                      {cat[1]}
+                    {/* <Link href="#" onClick={handleCategory(cat[0])}>{cat[1]}</Link> */}
+                  </Button>
+                ))}
+              </Grid>
+          <Grid item style={{marginTop: "20px"}}>
+                <b>Filter</b>
+              </Grid>
+              <Grid item container direction="column">
+                {categoriesList.map((cat) => (
+                    <Button variant="outlined" onClick={() => setFilter(cat[0])} className={filter == cat[0]? styles.categoryButtonSelected :styles.categoryButton }>
+                      {cat[1]}
+                    {/* <Link href="#" onClick={handleCategory(cat[0])}>{cat[1]}</Link> */}
+                  </Button>
+                ))}
+              </Grid>
+          </Grid>
+          </Grid>
+        {/* </Grid> */}
+        </Hidden>
+        <Hidden smDown>
+        <Grid item xs={2}>
+          <Grid item container direction="column" alignItems="center" spacing={2}>
+              <Grid item>
+                <b>Category </b>
+              </Grid>
+              <Grid item container direction="column">
+                {categoriesList.map((cat) => (
+                    <Button variant="outlined" onClick={() => setCategory(cat[0])} className={category == cat[0]? styles.categoryButtonSelected :styles.categoryButton }>
+                      {cat[1]}
+                  </Button>
+                ))}
+              </Grid>
+          </Grid>
+          </Grid>
+          <Grid item xs={8} >
+            <Grid style={{maxHeight: (window.outerHeight - 150), overflow: 'auto'}}>
+            {!result ? <Typography align="center"> Our Database does not have what you need :( </Typography> 
+              :
+            result.map((item) => (
+              <Grid item>
+                <Paper variant="outlined" className={styles.subjectPaper}>
+                  
+                    <Grid item xs={1}>
+                      <Grid container justify="center">
+                      {!item.image ? 
+                        <RateReviewOutlinedIcon className={styles.avatar}/>
+                      :
+                      <Avatar variant="rounded" className={styles.avatar} src={item.image}/>
+                    }
+                    </Grid>
+                    </Grid>
+                    <Grid item container xs={11} style={{marginLeft: "30px"}}>
+                        <Grid container direction="column" spacing={1}>
+                          <Grid item>Product Name: {item.product} </Grid>
+                          <Grid item>Category: {item.generic_product} </Grid>
+                          <Grid item>Review Title : {item.review_title}  </Grid>
+                        </Grid>
+                      </Grid>
+                </Paper>
               </Grid>
             )
             )}
@@ -182,24 +301,27 @@ function App() {
               <Grid item>
                 <b>Sort by </b>
               </Grid>
-              {categoriesList.map((cat) => (
-                  <Grid item>
-                  <Link href="#" onClick={handleCategory(cat[0])}>{cat[1]}</Link>
-                </Grid>
-          ))}
+              <Grid item container direction="column">
+                {categoriesList.map((cat) => (
+                    <Button variant="outlined" onClick={() => setSortBy(cat[0])} className={sortBy == cat[0]? styles.categoryButtonSelected :styles.categoryButton }>
+                      {cat[1]}
+                  </Button>
+                ))}
+              </Grid>
           <Grid item style={{marginTop: "20px"}}>
                 <b>Filter</b>
               </Grid>
-              {categoriesList.map((cat) => (
-                  <Grid item>
-                  <Link href="#" onClick={handleCategory(cat[0])}>{cat[1]}</Link>
-                </Grid>
-          ))}
+              <Grid item container direction="column">
+                {categoriesList.map((cat) => (
+                    <Button variant="outlined" onClick={() => setFilter(cat[0])} className={filter == cat[0]? styles.categoryButtonSelected :styles.categoryButton }>
+                      {cat[1]}
+                  </Button>
+                ))}
+              </Grid>
           </Grid>
           </Grid>
-        </Grid>
+        </Hidden>
       </Grid>
-      </ThemeProvider>
     </div>
   );
 }
