@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "solr": "docker compose up",
+    "solr": "bash solr-setup.sh",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "app": "concurrently \"npm run server\" \"npm run client\"",
