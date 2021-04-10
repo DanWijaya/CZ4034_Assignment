@@ -12,12 +12,13 @@ const solrClient = new SolrNode({
 // .start(1)
 // .rows(1)
 
-router.post("/", (req, res) => {
+router.post("/:id", (req, res) => {
   // const genderQuery = {
   //     gender: query,
   //   };
   // Build a search query var
-  var query = req.body.query.replace(" ", "+");
+  console.log("DI RUN LAH");
+  var query = req.params.id.replace(" ", "+");
   const searchQuery = solrClient
     .query()
     .q(query)
@@ -25,7 +26,7 @@ router.post("/", (req, res) => {
       wt: "json",
       indent: true,
     })
-    .start(1)
+    .start(0)
     .rows(50);
 
   solrClient.search(searchQuery, function (err, result) {
@@ -35,12 +36,11 @@ router.post("/", (req, res) => {
     }
 
     const response = result.response;
-    // console.log("Result: ", response);
-
+    console.log(response);
     if (response && response.docs) {
       console.log(response.docs.length);
       response.docs.forEach((doc, idx) => {
-        console.log(idx);
+        console.log("product table:", doc);
       });
     }
     return res.status(200).json(response.docs);

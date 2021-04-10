@@ -7,30 +7,22 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import HomePage from "./Homepage"
-import ProductPage from "./Productpage"
-import NavBar from "./misc/NavBar"
+import HomePage from "./Homepage";
+import ProductPage from "./Productpage";
+import NavBar from "./misc/NavBar";
 
 function App() {
   return (
     <div>
       <Router>
-      <NavBar />
-      <Switch>
-        <Route
-          exact
-          path="/"
-          component={HomePage}
-        />
-        <Route
-          exact
-          path="/:product_id"
-          component={ProductPage}
-        />
+        <NavBar />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/:_product_id" component={ProductPage} />
         </Switch>
-        </Router>
+      </Router>
     </div>
-    );
+  );
 }
 
 export default App;
