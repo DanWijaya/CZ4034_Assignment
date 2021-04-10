@@ -120,7 +120,6 @@ function App() {
   const [category, setCategory] = React.useState("gender");
   const [filter, setFilter] = React.useState("gender");
   const [sortBy, setSortBy] = React.useState("gender");
-  const [clear, setClear] = React.useState(null);
 
   const handleSetQuery = (e) => {
     query = e.target.value
@@ -128,7 +127,6 @@ function App() {
 
   const handleClearQuery = (e) => {
     query = ""
-    setClear(true)
   };
 
   const handleCategory = (cat) => () => {
@@ -278,23 +276,23 @@ function App() {
               },
             }}
             InputProps={{
-              endAdornment: (
-                <InputAdornment
-                  position="end"
-                  style={{ marginLeft: "-10px", marginRight: "-10px" }}
-                >
-                  <IconButton
-                    size="small"
-                    onClick={handleClearQuery}
-                    style={{
-                      opacity: 0.7,
-                      visibility: query || query === "" ? "hidden" : "visible",
-                    }}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </InputAdornment>
-              ),
+              // endAdornment: (
+              //   <InputAdornment
+              //     position="end"
+              //     style={{ marginLeft: "-10px", marginRight: "-10px" }}
+              //   >
+              //     <IconButton
+              //       size="small"
+              //       onClick={handleClearQuery}
+              //       style={{
+              //         opacity: 0.7,
+              //         visibility: query || query === "" ? "hidden" : "visible",
+              //       }}
+              //     >
+              //       <ClearIcon />
+              //     </IconButton>
+              //   </InputAdornment>
+              // ),
             }}
           />
           <Button
