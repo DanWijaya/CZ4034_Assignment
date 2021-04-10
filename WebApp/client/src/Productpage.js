@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   contents: {
     marginTop: "70px",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   // avatar: {
   //   margin: "auto",
@@ -79,74 +79,68 @@ export default function ProductPage(props) {
             {_product.price != -1 ? _product.price : "Not Available"}
           </Grid>
           <Grid item>
-            {_product.num_of_ratings != -1 ? _product.num_of_ratings : "Not Available"}
-            {" "} Ratings
+            {_product.num_of_ratings != -1
+              ? _product.num_of_ratings
+              : "Not Available"}{" "}
+            Ratings
           </Grid>
           <Grid item>
-          <Grid item container
-            style={{ maxHeight: window.outerHeight - 150, overflow: "auto" }}
+            <Grid
+              item
+              container
+              style={{ maxHeight: window.outerHeight - 150, overflow: "auto" }}
+            >
+              {/* <Grid item container> */}
+              <Typography>Rating: </Typography>
+              {_product.avg_rating != -1 ? (
+                <Rating
+                  readOnly
+                  defaultValue={parseInt(_product.avg_rating[0])}
+                  precision={0.1}
+                  emptyIcon={<StarBorderIcon fontSize="inherit" />}
+                />
+              ) : (
+                <Typography>No rating</Typography>
+              )}
+              <Typography style={{ marginLeft: "5px" }}>
+                {_product.avg_rating != -1
+                  ? `${_product.avg_rating} out of 5.0`
+                  : null}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            container
+            spacing={2}
+            justify="center"
+            style={{ marginTop: "20px" }}
           >
-          {/* <Grid item container> */}
-            <Typography>Rating: </Typography>
-            {_product.avg_rating != -1 ? (
-              <Rating
-                readOnly
-                defaultValue={parseInt(_product.avg_rating[0])}
-                precision={0.1}
-                emptyIcon={<StarBorderIcon fontSize="inherit" />}
-              />
-            ) : (
-              <Typography>No rating</Typography>
-            )}
-            <Typography style={{ marginLeft: "5px" }}>
-                  {_product.avg_rating != -1
-                    ? `${_product.avg_rating} out of 5.0`
-                    : null}
-                </Typography>
-          </Grid>
-          </Grid>
-          <Grid item container spacing={2} justify="center" style={{marginTop: "20px"}}>
-          <Typography>Customer Reviews</Typography>
+            <Typography>Customer Reviews</Typography>
             <Grid item>
-            {_reviews.map((r) => {
-              return(
-                <Grid item>
-                  <Paper
-                    variant="outlined"
-                    className={classes.itemPaper}>
-                    <Grid item container direction="column" spacing={2}>
-                  {r.image ? 
+              {_reviews.map((r) => {
+                return (
                   <Grid item>
-                    <img src={r.image}/>
-                  </Grid> 
-                  :
-                  null
-                  }
-                  <Grid item>
-                    User Name: {r.uname}
+                    <Paper variant="outlined" className={classes.itemPaper}>
+                      <Grid item container direction="column" spacing={2}>
+                        {r.image ? (
+                          <Grid item>
+                            <img src={r.image} />
+                          </Grid>
+                        ) : null}
+                        <Grid item>User Name: {r.uname}</Grid>
+                        <Grid item>Review Title: {r.review_title}</Grid>
+                        <Grid item>Review: {r.review}</Grid>
+                        <Grid item>Review Date: {r.date}</Grid>
+                        <Grid item>Upvotes: {r.upvotes}</Grid>
+                      </Grid>
+                    </Paper>
                   </Grid>
-                  <Grid item>
-                    Review Title: {r.review_title}
-                  </Grid>
-                  <Grid item>
-                    Review: {r.review}
-                  </Grid>
-                  <Grid item>
-                    Review Date: {r.date}
-                  </Grid>
-                  <Grid item>
-                    Upvotes: {r.upvotes}
-                  </Grid>
-                  </Grid> 
-                  </Paper>
-                </Grid>
-              )
-            })}                    
+                );
+              })}
+            </Grid>
           </Grid>
-          </Grid>
-          <Grid item>
-
-          </Grid>
+          <Grid item></Grid>
         </Grid>
       </div>
     );

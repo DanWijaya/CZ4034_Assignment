@@ -38,12 +38,12 @@ router.post("/:id", (req, res) => {
     const response = result.response;
     // console.log("Result: ", response);
 
-    if (response && response.docs) {
-      console.log(response.docs.length);
-      response.docs.forEach((doc, idx) => {
-        console.log(doc);
-      });
-    }
+    // if (response && response.docs) {
+    //   console.log(response.docs.length);
+      // response.docs.forEach((doc, idx) => {
+      //   console.log(doc);
+      // });
+    // }
     return res.status(200).json(response.docs);
   });
 });
