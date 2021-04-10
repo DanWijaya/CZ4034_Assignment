@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import HomePage from "./Homepage";
 import ProductPage from "./Productpage";
+import Wordcloud from "./Wordcloud";
 import NavBar from "./misc/NavBar";
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          {/* <Route exact path="/word/:product_id" component={Wordcloud} /> */}
+          <Route exact path="/word/:product_id" component={Wordcloud} />
           <Route exact path="/:_product_id" component={ProductPage} />
         </Switch>
       </Router>

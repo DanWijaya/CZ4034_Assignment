@@ -11,7 +11,7 @@
     "app": "concurrently \"npm run server\" \"npm run client\" \"npm run prettier\"",
     "prettier": "prettier --write \"./**/*.{js,json}\""
   },
-  "author": "pentacode",
+  "author": "Group20",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
