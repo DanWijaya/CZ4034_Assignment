@@ -115,23 +115,27 @@ export default function ProductPage(props) {
                     variant="outlined"
                     className={classes.itemPaper}>
                     <Grid item container direction="column" spacing={2}>
+                  {r.image ? 
                   <Grid item>
-                    {r.image}
+                    <img src={r.image}/>
+                  </Grid> 
+                  :
+                  null
+                  }
+                  <Grid item>
+                    User Name: {r.uname}
                   </Grid>
                   <Grid item>
-                    {r.review_title}
+                    Review Title: {r.review_title}
                   </Grid>
                   <Grid item>
-                    {r.review}
+                    Review: {r.review}
                   </Grid>
                   <Grid item>
-                    {r.date}
+                    Review Date: {r.date}
                   </Grid>
                   <Grid item>
-                    {r.upvotes}
-                  </Grid>
-                  <Grid item>
-                    {r.uname}
+                    Upvotes: {r.upvotes}
                   </Grid>
                   </Grid> 
                   </Paper>
