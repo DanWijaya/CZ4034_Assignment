@@ -209,7 +209,6 @@ function App() {
                       <Paper
                         variant="outlined"
                         className={styles.itemPaper}
-                        button
                       >
                         <Grid item xs={1}>
                           <Grid container justify="center">
