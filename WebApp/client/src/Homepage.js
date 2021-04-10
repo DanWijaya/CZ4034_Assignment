@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchField: {
     width: "70%",
+    margin: "10px",
   },
   contents: {
     marginTop: "70px",
@@ -68,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.success.main,
       color: "white",
     },
+    margin: "10px",
   },
   titleDivider: {
     backgroundColor: theme.palette.primary.main,
@@ -142,21 +144,10 @@ function App() {
     });
   };
 
-  // const categoriesList = [["generic_product", "Generic Product"]]
-
   return (
     <div className={styles.root}>
       <form onSubmit={onSubmit}>
         <Grid container justify="center" className={styles.contents}>
-          <Button
-            type="submit"
-            startIcon={<SearchIcon />}
-            variant="contained"
-            className={styles.submitButton}
-            style={{ bakgroundColor: "black" }}
-          >
-            Search
-          </Button>
           <TextField
             variant="outlined"
             value={query}
@@ -189,6 +180,15 @@ function App() {
               ),
             }}
           />
+          <Button
+            type="submit"
+            startIcon={<SearchIcon />}
+            variant="contained"
+            className={styles.submitButton}
+            style={{ bakgroundColor: "black" }}
+          >
+            Search
+          </Button>
         </Grid>
       </form>
       <Grid container spacing={2} style={{ marginTop: "5px" }} justify="center">
@@ -204,12 +204,13 @@ function App() {
             ) : (
               result.map((item) => {
                 return (
+
                   <Link to={`/${item._product_id}`} className={styles.linkText}>
                     <Grid item>
                       <Paper
                         variant="outlined"
                         className={styles.itemPaper}
-                      >
+                        >
                         <Grid item xs={1}>
                           <Grid container justify="center">
                             {!item.image ? (
@@ -240,7 +241,7 @@ function App() {
                               {item.avg_rating != -1 ? (
                                 <Rating
                                   readOnly
-                                  defaultValue={parseInt(item.avg_rating[0])}
+                                  defaultValue={parseFloat(item.avg_rating[0])}
                                   precision={0.1}
                                   emptyIcon={
                                     <StarBorderIcon fontSize="inherit" />
