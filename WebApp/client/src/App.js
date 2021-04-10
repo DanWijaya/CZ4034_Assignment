@@ -19,7 +19,7 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/:product_id" component={Wordcloud} />
+          <Route exact path="/word/:product_id" component={Wordcloud} />
           <Route exact path="/:_product_id" component={ProductPage} />
         </Switch>
       </Router>

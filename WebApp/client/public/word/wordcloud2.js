@@ -182,7 +182,9 @@ if (!window.clearImmediate) {
   };
 
   var timer;
-  var WordCloud = function WordCloud(elements, options) {
+  var WordCloud = function WordCloud(elements, options, resolve) {
+    console.log("ELEMENTS", elements)
+    console.log("OPTIONS", options)
     if (!isSupported) {
       return;
     }
@@ -1320,6 +1322,7 @@ if (!window.clearImmediate) {
 
     // All set, start the drawing
     start();
+    resolve();
   };
 
   WordCloud.isSupported = isSupported;

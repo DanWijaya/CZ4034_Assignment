@@ -204,13 +204,9 @@ function App() {
             ) : (
               result.map((item) => {
                 return (
-
                   <Link to={`/${item._product_id}`} className={styles.linkText}>
                     <Grid item>
-                      <Paper
-                        variant="outlined"
-                        className={styles.itemPaper}
-                        >
+                      <Paper variant="outlined" className={styles.itemPaper}>
                         <Grid item xs={1}>
                           <Grid container justify="center">
                             {!item.image ? (
