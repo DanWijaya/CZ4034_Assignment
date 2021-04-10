@@ -11,6 +11,7 @@ import {
   Typography,
   Paper,
   Avatar,
+  Divider,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import NavBar from "./misc/NavBar";
@@ -111,25 +112,41 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const styles = useStyles();
-
-  const [query, setQuery] = React.useState("");
+  var query;
+  // const [query, setQuery] = React.useState("");
   const [reviews, setReview] = React.useState([]);
-  const [products, setProduct] = React.useState([]);
+  // const [products, setProduct] = React.useState([]);
+  const [products, setProduct] = React.useState(new Map());
   const [category, setCategory] = React.useState("gender");
   const [filter, setFilter] = React.useState("gender");
   const [sortBy, setSortBy] = React.useState("gender");
+  const [clear, setClear] = React.useState(null);
 
   const handleSetQuery = (e) => {
-    setQuery(e.target.value);
+    query = e.target.value
   };
 
   const handleClearQuery = (e) => {
-    setQuery("");
+    query = ""
+    setClear(true)
   };
 
   const handleCategory = (cat) => () => {
     setCategory(cat);
   };
+
+  React.useEffect(() => {
+    axios.post(`/api/products/*`).then((res) => {
+      if (!res.data.length) {
+        setProduct(new Map());
+      } else {
+        let data = new Map();
+        console.log(res.data)
+        res.data.forEach((r) => data.set(r._product_id[0], r))
+        setProduct(data);
+      }
+    });
+  }, [])
 
   function groupBy(collection, property) {
     var i = 0,
@@ -151,9 +168,9 @@ function App() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      query: query,
-    };
+    // const data = {
+    //   query: query,
+    // };
     axios.post(`/api/reviews/${query}`).then((res) => {
       if (!res.data.length) {
         setReview(res.data.length);
@@ -161,17 +178,88 @@ function App() {
         setReview(res.data);
       }
     });
-
-    axios.post(`/api/products/*`).then((res) => {
-      if (!res.data.length) {
-        setProduct(res.data.length);
-      } else {
-        setProduct(res.data);
-        console.log(res.data);
-      }
-    });
   };
 
+  function ReviewList(props){
+    const {reviews, products} = props;
+    const styles = useStyles();
+
+    return(
+      reviews.map((item, idx) => {
+        let product_id = item.product_id[0];
+        console.log(product_id)
+        return (
+          <Link to={`/${item.product_id}`} className={styles.linkText}>
+            <Grid item>
+              <Paper variant="outlined" className={styles.itemPaper}>
+                <Grid item xs={2}>
+                  <Grid container justify="center">
+                    <Grid item>
+                    {!products.get(product_id) ? (
+                      <RateReviewOutlinedIcon
+                        className={styles.avatar}
+                      />
+                    ) : (
+                        <img src={products.get(product_id).image} style={{maxWidth: "100%", maxHeight: "100%"}}/>
+                    )}
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  xs={10}
+                  style={{ marginLeft: "30px" }}
+                >
+                  <Grid container direction="column" spacing={1}>
+                    <Grid item>
+                      <b>{item.product[0]} </b>
+                    </Grid>
+                    <Grid item>
+                      Product Category: {item.generic_product[0]}
+                    </Grid>
+                    <Grid item>
+                      Number of ratings: {products.get(product_id) ? products.get(product_id).num_of_ratings : 0}
+                    </Grid>
+                    <Divider/>
+                    <Grid item style={{marginTop:"10px"}}>
+                      <b>Review Title: </b>{item.review_title[0]}
+                    </Grid>
+                    <Grid item>
+                      <b>Review Description:</b> {item.review[0].split(" ").slice(0, 20).join(" ")}{" "}
+                      ...
+                    </Grid>
+                    <Grid item container>
+                      {item.rating[0] != -1 ? (
+                        <Rating
+                          readOnly
+                          defaultValue={parseFloat(item.rating[0])}
+                          precision={0.1}
+                          emptyIcon={
+                            <StarBorderIcon fontSize="inherit" />
+                          }
+                        />
+                      ) : (
+                        <Typography>No rating</Typography>
+                      )}
+                      <Typography style={{ marginLeft: "5px" }}>
+                        {item.rating[0] != -1
+                          ? `${item.rating[0]} out of 5.0`
+                          : null}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      {item.upvotes[0]} people find it useful
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Link>
+        );
+      })
+    )
+  }
   return (
     <div className={styles.root}>
       <form onSubmit={onSubmit}>
@@ -179,9 +267,10 @@ function App() {
           <TextField
             variant="outlined"
             value={query}
+            onChange={handleSetQuery}
             placeholder="What to search ah?"
             className={styles.searchField}
-            onChange={handleSetQuery}
+            onSubmit={onSubmit}
             inputProps={{
               style: {
                 height: "4px",
@@ -199,7 +288,7 @@ function App() {
                     onClick={handleClearQuery}
                     style={{
                       opacity: 0.7,
-                      visibility: !query ? "hidden" : "visible",
+                      visibility: query || query === "" ? "hidden" : "visible",
                     }}
                   >
                     <ClearIcon />
@@ -230,66 +319,7 @@ function App() {
                 Our Database does not have what you need :({" "}
               </Typography>
             ) : (
-              reviews.map((item) => {
-                return (
-                  <Link to={`/${item.product_id}`} className={styles.linkText}>
-                    <Grid item>
-                      <Paper variant="outlined" className={styles.itemPaper}>
-                        <Grid item xs={1}>
-                          <Grid container justify="center">
-                            {!item.image ? (
-                              <RateReviewOutlinedIcon
-                                className={styles.avatar}
-                              />
-                            ) : (
-                              <Avatar
-                                variant="rounded"
-                                className={styles.avatar}
-                                src={item.image}
-                              />
-                            )}
-                          </Grid>
-                        </Grid>
-                        <Grid
-                          item
-                          container
-                          xs={11}
-                          style={{ marginLeft: "30px" }}
-                        >
-                          <Grid container direction="column" spacing={1}>
-                            <Grid item>
-                              <b>{item.review_title[0]} </b>
-                            </Grid>
-                            <Grid item>
-                              {item.review[0].split(" ").slice(0, 20).join(" ")}{" "}
-                              ...
-                            </Grid>
-                            <Grid item container>
-                              {item.rating[0] != -1 ? (
-                                <Rating
-                                  readOnly
-                                  defaultValue={parseFloat(item.rating[0])}
-                                  precision={0.1}
-                                  emptyIcon={
-                                    <StarBorderIcon fontSize="inherit" />
-                                  }
-                                />
-                              ) : (
-                                <Typography>No rating</Typography>
-                              )}
-                              <Typography style={{ marginLeft: "5px" }}>
-                                {item.rating[0] != -1
-                                  ? `${item.rating[0]} out of 5.0`
-                                  : null}
-                              </Typography>
-                            </Grid>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                    </Grid>
-                  </Link>
-                );
-              })
+              <ReviewList reviews={reviews} products={products}/>
             )}
           </Grid>
         </Grid>

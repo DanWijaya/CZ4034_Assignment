@@ -27,7 +27,7 @@ router.post("/:id", (req, res) => {
       indent: true,
     })
     .start(0)
-    .rows(50);
+    .rows(320);
 
   solrClient.search(searchQuery, function (err, result) {
     if (err) {

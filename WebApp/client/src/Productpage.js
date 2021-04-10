@@ -66,8 +66,8 @@ export default function ProductPage(props) {
     return (
       <div className={classes.root}>
         <Grid container justify="center" className={classes.contents}>
-          <Grid item xs={3}>
-            <img src={_product.image} />
+          <Grid item>
+            <img src={_product.image} style={{maxHeight: "300px", maxWidth: "300px"}} />
           </Grid>
         </Grid>
         <Grid container direction="column" alignItems="center" spacing={2}>
@@ -122,7 +122,7 @@ export default function ProductPage(props) {
                 return (
                   <Grid item>
                     <Paper variant="outlined" className={classes.itemPaper}>
-                      <Grid item container direction="column" spacing={2}>
+                      <Grid item container direction="column" spacing={2} style={{padding: "20px"}}>
                         {r.image ? (
                           <Grid item>
                             <img src={r.image} />
@@ -131,7 +131,7 @@ export default function ProductPage(props) {
                         <Grid item>User Name: {r.uname}</Grid>
                         <Grid item>Review Title: {r.review_title}</Grid>
                         <Grid item>Review: {r.review}</Grid>
-                        <Grid item>Review Date: {r.date}</Grid>
+                        <Grid item>Review Date: {Date(r.date)}</Grid>
                         <Grid item>Upvotes: {r.upvotes}</Grid>
                       </Grid>
                     </Paper>
