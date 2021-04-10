@@ -54,12 +54,13 @@ const useStyles = makeStyles((theme) => ({
   },
   searchField: {
     width: "70%",
+    margin: "10px",
   },
   contents: {
     marginTop: "70px",
   },
   linkText: {
-    textDecoration: "none"
+    textDecoration: "none",
   },
   submitButton: {
     display: "flex",
@@ -69,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.success.main,
       color: "white",
     },
+    margin: "10px",
   },
   titleDivider: {
     backgroundColor: theme.palette.primary.main,
@@ -144,26 +146,18 @@ function App() {
   };
 
   React.useEffect(() => {
-    axios.post()
-  },[])
+    axios.post();
+  }, []);
   // const categoriesList = [["generic_product", "Generic Product"]]
 
   const test = () => {
-    console.log("HELLO world")
-  }
+    console.log("HELLO world");
+  };
+
   return (
     <div className={styles.root}>
       <form onSubmit={onSubmit}>
         <Grid container justify="center" className={styles.contents}>
-          <Button
-            type="submit"
-            startIcon={<SearchIcon />}
-            variant="contained"
-            className={styles.submitButton}
-            style={{ bakgroundColor: "black" }}
-          >
-            Search
-          </Button>
           <TextField
             variant="outlined"
             value={query}
@@ -196,6 +190,15 @@ function App() {
               ),
             }}
           />
+          <Button
+            type="submit"
+            startIcon={<SearchIcon />}
+            variant="contained"
+            className={styles.submitButton}
+            style={{ bakgroundColor: "black" }}
+          >
+            Search
+          </Button>
         </Grid>
       </form>
       <Grid container spacing={2} style={{ marginTop: "5px" }} justify="center">
@@ -212,50 +215,62 @@ function App() {
               result.map((item) => {
                 return (
                   <Link to={`${item._product_id}`} className={styles.linkText}>
-                  <Grid item onClick={test}>
-                    <Paper variant="outlined" className={styles.itemPaper} button>
-                      <Grid item xs={1}>
-                        <Grid container justify="center">
-                          {!item.image ? (
-                            <RateReviewOutlinedIcon className={styles.avatar} />
-                          ) : (
-                            <Avatar
-                              variant="rounded"
-                              className={styles.avatar}
-                              src={item.image}
-                            />
-                          )}
-                        </Grid>
-                      </Grid>
-                      <Grid
-                        item
-                        container
-                        xs={11}
-                        style={{ marginLeft: "30px" }}
+                    <Grid item onClick={test}>
+                      <Paper
+                        variant="outlined"
+                        className={styles.itemPaper}
+                        button
                       >
-                        <Grid container direction="column" spacing={1}>
-                          <Grid item>
-                            <b>{item.product[0]} </b>
-                          </Grid>
-                          <Grid item>Category: {item.generic_product} </Grid>
-                          <Grid item container>
-                            {item.avg_rating != -1 ?
-                            <Rating
-                              readOnly
-                              defaultValue={item.avg_rating}
-                              precision={0.1}
-                              emptyIcon={<StarBorderIcon fontSize="inherit" />}
-                            />
-                            :
-                            <Typography>No rating</Typography>
-                            }
-                             <Typography style={{marginLeft: "5px"}}>{item.avg_rating != -1 ? `${item.avg_rating} out of 5.0` : null}</Typography>
+                        <Grid item xs={1}>
+                          <Grid container justify="center">
+                            {!item.image ? (
+                              <RateReviewOutlinedIcon
+                                className={styles.avatar}
+                              />
+                            ) : (
+                              <Avatar
+                                variant="rounded"
+                                className={styles.avatar}
+                                src={item.image}
+                              />
+                            )}
                           </Grid>
                         </Grid>
-                      </Grid>
-                    </Paper>
-                  </Grid>
-                </Link>
+                        <Grid
+                          item
+                          container
+                          xs={11}
+                          style={{ marginLeft: "30px" }}
+                        >
+                          <Grid container direction="column" spacing={1}>
+                            <Grid item>
+                              <b>{item.product[0]} </b>
+                            </Grid>
+                            <Grid item>Category: {item.generic_product} </Grid>
+                            <Grid item container>
+                              {item.avg_rating != -1 ? (
+                                <Rating
+                                  readOnly
+                                  defaultValue={item.avg_rating}
+                                  precision={0.1}
+                                  emptyIcon={
+                                    <StarBorderIcon fontSize="inherit" />
+                                  }
+                                />
+                              ) : (
+                                <Typography>No rating</Typography>
+                              )}
+                              <Typography style={{ marginLeft: "5px" }}>
+                                {item.avg_rating != -1
+                                  ? `${item.avg_rating} out of 5.0`
+                                  : null}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                    </Grid>
+                  </Link>
                 );
               })
             )}

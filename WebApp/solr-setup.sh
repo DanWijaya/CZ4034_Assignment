@@ -20,3 +20,5 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
 docker exec -it newsolr post -c product_table /data/product_lists.csv
 
 docker exec -it newsolr post -c review_table /data/review_table.csv
+
+echo "--- solr server is up. ---"
