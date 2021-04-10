@@ -17,7 +17,7 @@ router.post("/:id", (req, res) => {
   //     gender: query,
   //   };
   // Build a search query var
-  console.log("DI RUN LAH");
+  // console.log("DI RUN LAH");
   var query = req.params.id.replace(" ", "+");
   const searchQuery = solrClient
     .query()
@@ -36,13 +36,13 @@ router.post("/:id", (req, res) => {
     }
 
     const response = result.response;
-    console.log(response);
-    if (response && response.docs) {
-      console.log(response.docs.length);
-      response.docs.forEach((doc, idx) => {
-        console.log("product table:", doc);
-      });
-    }
+    // console.log(response);
+    // if (response && response.docs) {
+    //   console.log(response.docs.length);
+    //   response.docs.forEach((doc, idx) => {
+    //     console.log("product table:", doc);
+    //   });
+    // }
     return res.status(200).json(response.docs);
   });
 });

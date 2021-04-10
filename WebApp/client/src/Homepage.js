@@ -113,7 +113,8 @@ function App() {
   const styles = useStyles();
 
   const [query, setQuery] = React.useState("");
-  const [result, setResult] = React.useState([]);
+  const [reviews, setReview] = React.useState([]);
+  const [products, setProduct] = React.useState([]);
   const [category, setCategory] = React.useState("gender");
   const [filter, setFilter] = React.useState("gender");
   const [sortBy, setSortBy] = React.useState("gender");
@@ -130,16 +131,43 @@ function App() {
     setCategory(cat);
   };
 
+  function groupBy(collection, property) {
+    var i = 0,
+      val,
+      index,
+      values = [],
+      result = [];
+    for (; i < collection.length; i++) {
+      val = collection[i][property];
+      index = values.indexOf(val);
+      if (index > -1) result[index].push(collection[i]);
+      else {
+        values.push(val);
+        result.push([collection[i]]);
+      }
+    }
+    return result;
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     const data = {
       query: query,
     };
-    axios.post(`/api/products/${query}`).then((res) => {
+    axios.post(`/api/reviews/${query}`).then((res) => {
       if (!res.data.length) {
-        setResult(res.data.length);
+        setReview(res.data.length);
       } else {
-        setResult(res.data);
+        setReview(res.data);
+      }
+    });
+
+    axios.post(`/api/products/*`).then((res) => {
+      if (!res.data.length) {
+        setProduct(res.data.length);
+      } else {
+        setProduct(res.data);
+        console.log(res.data);
       }
     });
   };
@@ -196,15 +224,15 @@ function App() {
           <Grid
             style={{ maxHeight: window.outerHeight - 150, overflow: "auto" }}
           >
-            {!result ? (
+            {!reviews ? (
               <Typography align="center">
                 {" "}
                 Our Database does not have what you need :({" "}
               </Typography>
             ) : (
-              result.map((item) => {
+              reviews.map((item) => {
                 return (
-                  <Link to={`/${item._product_id}`} className={styles.linkText}>
+                  <Link to={`/${item.product_id}`} className={styles.linkText}>
                     <Grid item>
                       <Paper variant="outlined" className={styles.itemPaper}>
                         <Grid item xs={1}>
@@ -230,14 +258,17 @@ function App() {
                         >
                           <Grid container direction="column" spacing={1}>
                             <Grid item>
-                              <b>{item.product[0]} </b>
+                              <b>{item.review_title[0]} </b>
                             </Grid>
-                            <Grid item>Category: {item.generic_product} </Grid>
+                            <Grid item>
+                              {item.review[0].split(" ").slice(0, 20).join(" ")}{" "}
+                              ...
+                            </Grid>
                             <Grid item container>
-                              {item.avg_rating != -1 ? (
+                              {item.rating[0] != -1 ? (
                                 <Rating
                                   readOnly
-                                  defaultValue={parseFloat(item.avg_rating[0])}
+                                  defaultValue={parseFloat(item.rating[0])}
                                   precision={0.1}
                                   emptyIcon={
                                     <StarBorderIcon fontSize="inherit" />
@@ -247,8 +278,8 @@ function App() {
                                 <Typography>No rating</Typography>
                               )}
                               <Typography style={{ marginLeft: "5px" }}>
-                                {item.avg_rating != -1
-                                  ? `${item.avg_rating} out of 5.0`
+                                {item.rating[0] != -1
+                                  ? `${item.rating[0]} out of 5.0`
                                   : null}
                               </Typography>
                             </Grid>
