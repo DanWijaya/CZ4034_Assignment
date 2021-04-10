@@ -113,11 +113,14 @@ export default function ProductPage(props) {
             item
             container
             spacing={2}
-            justify="center"
+            alignItems="center"
             style={{ marginTop: "20px" }}
+            direction="column"
           >
-            <Typography>Customer Reviews</Typography>
             <Grid item>
+              <Typography>Customer Reviews</Typography>
+            </Grid>
+            <Grid item container spacing={2} direction="column">
               {_reviews.map((r) => {
                 return (
                   <Grid item>
@@ -128,11 +131,11 @@ export default function ProductPage(props) {
                             <img src={r.image} />
                           </Grid>
                         ) : null}
-                        <Grid item>User Name: {r.uname}</Grid>
-                        <Grid item>Review Title: {r.review_title}</Grid>
-                        <Grid item>Review: {r.review}</Grid>
-                        <Grid item>Review Date: {Date(r.date)}</Grid>
-                        <Grid item>Upvotes: {r.upvotes}</Grid>
+                        <Grid item><b>User Name: </b>{r.uname}</Grid>
+                        <Grid item><b>Review Title:</b> {r.review_title}</Grid>
+                        <Grid item><b>Review:</b> {r.review}</Grid>
+                        <Grid item><b>Review Date:</b> {Date(r.date)}</Grid>
+                        <Grid item><b>Upvotes: </b>{r.upvotes}</Grid>
                       </Grid>
                     </Paper>
                   </Grid>
