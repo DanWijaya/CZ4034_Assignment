@@ -10,7 +10,6 @@ import {
 import HomePage from "./Homepage";
 import ProductPage from "./Productpage";
 import Wordcloud from "./Wordcloud";
-
 import NavBar from "./misc/NavBar";
 
 function App() {
@@ -21,6 +20,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/:product_id" component={Wordcloud} />
+          <Route exact path="/:_product_id" component={ProductPage} />
         </Switch>
       </Router>
     </div>

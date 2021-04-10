@@ -2,7 +2,6 @@ import React from "react";
 import "./App.css";
 import axios from "axios";
 import {
-  AppBar,
   Button,
   Grid,
   Hidden,
@@ -136,22 +135,13 @@ function App() {
     const data = {
       query: query,
     };
-    axios.post(`/api/products/`, data).then((res) => {
+    axios.post(`/api/products/${query}`).then((res) => {
       if (!res.data.length) {
         setResult(res.data.length);
       } else {
         setResult(res.data);
       }
     });
-  };
-
-  React.useEffect(() => {
-    axios.post();
-  }, []);
-  // const categoriesList = [["generic_product", "Generic Product"]]
-
-  const test = () => {
-    console.log("HELLO world");
   };
 
   return (
@@ -214,13 +204,13 @@ function App() {
             ) : (
               result.map((item) => {
                 return (
-                  <Link to={`${item._product_id}`} className={styles.linkText}>
-                    <Grid item onClick={test}>
+
+                  <Link to={`/${item._product_id}`} className={styles.linkText}>
+                    <Grid item>
                       <Paper
                         variant="outlined"
                         className={styles.itemPaper}
-                        button
-                      >
+                        >
                         <Grid item xs={1}>
                           <Grid container justify="center">
                             {!item.image ? (
@@ -251,7 +241,7 @@ function App() {
                               {item.avg_rating != -1 ? (
                                 <Rating
                                   readOnly
-                                  defaultValue={item.avg_rating}
+                                  defaultValue={parseFloat(item.avg_rating[0])}
                                   precision={0.1}
                                   emptyIcon={
                                     <StarBorderIcon fontSize="inherit" />
