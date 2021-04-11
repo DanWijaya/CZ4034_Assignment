@@ -5,11 +5,15 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { globalStyles } from "./misc/GlobalStyles";
 import { ThemeProvider } from "@material-ui/core/styles";
+import history from "./history";
+import { Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={globalStyles}>
-      <App />
+      <Router history={history}>
+        <App />
+      </Router>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
