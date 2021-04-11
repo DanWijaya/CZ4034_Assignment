@@ -1,6 +1,6 @@
 
+.DS_Store
 */.DS_Store
 .idea
 */.idea
-WebApp/package.json
 WebApp/package-lock.json
