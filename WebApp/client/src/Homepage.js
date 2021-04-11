@@ -17,12 +17,14 @@ import Rating from "@material-ui/lab/Rating";
 import NavBar from "./misc/NavBar";
 import { globalStyles } from "./misc/GlobalStyles";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 //Icons
 import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SearchIcon from "@material-ui/icons/Search";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
+import timediff from "timediff";
+
 // import {SentimentVeryDissatisfiedIcon, SentimentDissatisfiedIcon, SentimentSatisfiedIcon, SentimentSatisfiedAltIcon, SentimentVerySatisfiedIcon} from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -110,17 +112,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+function App(props) {
   const styles = useStyles();
   var query;
-  // const [query, setQuery] = React.useState("");
-  const [reviews, setReview] = React.useState([]);
+  // const [query, setQuery] = React.useState(props.match.params.query_string);
+  const [reviews, setReview] = React.useState(null);
   // const [products, setProduct] = React.useState([]);
   const [products, setProduct] = React.useState(new Map());
   const [category, setCategory] = React.useState("gender");
   const [filter, setFilter] = React.useState("gender");
   const [sortBy, setSortBy] = React.useState("gender");
-
+  const [queryTime, setQueryTime] = React.useState(null);
   const handleSetQuery = (e) => {
     query = e.target.value;
   };
@@ -131,6 +133,31 @@ function App() {
 
   const handleCategory = (cat) => () => {
     setCategory(cat);
+  };
+  const history = useHistory();
+  function getDifferenceInSeconds(date1, date2) {
+    const diffInMs = Math.abs(date2 - date1);
+    console.log(date1, date2)
+    return diffInMs / 1000;
+  }
+
+  const onSubmit = (e) => {
+    var starttime = new Date()
+    e.preventDefault();
+    if (query) {
+      axios.post(`/api/reviews/${query}`).then((res) => {
+        setReview(res.data);
+        history.push({
+          pathname: `/search/${query}`,
+          state: {
+            reviews: res.data,
+            query_string: query,
+          },
+        });
+        var endtime = new Date()
+        setQueryTime(getDifferenceInSeconds(starttime, endtime))
+      })
+    }
   };
 
   React.useEffect(() => {
@@ -144,7 +171,13 @@ function App() {
         setProduct(data);
       }
     });
-  }, []);
+  },[])
+  
+  React.useEffect(() => {
+    if (props.match.params.query_string && props.location.state) {
+      setReview(props.location.state.reviews);
+    }
+  }, [props.match.params.query_string]);
 
   function groupBy(collection, property) {
     var i = 0,
@@ -164,27 +197,13 @@ function App() {
     return result;
   }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    // const data = {
-    //   query: query,
-    // };
-    axios.post(`/api/reviews/${query}`).then((res) => {
-      if (!res.data.length) {
-        setReview(res.data.length);
-      } else {
-        setReview(res.data);
-      }
-    });
-  };
-
   function ReviewList(props) {
     const { reviews, products } = props;
     const styles = useStyles();
 
     return reviews.map((item, idx) => {
       let product_id = item.product_id[0];
-      console.log(product_id);
+      // console.log(product_id);
       return (
         <Link to={`/${item.product_id}`} className={styles.linkText}>
           <Grid item>
@@ -252,11 +271,13 @@ function App() {
   }
   return (
     <div className={styles.root}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} action={`/${query}`}>
         <Grid container justify="center" className={styles.contents}>
           <TextField
+            id="searchField"
             variant="outlined"
             value={query}
+            // defaultValue={props.match.params.query_string}
             onChange={handleSetQuery}
             placeholder="What to search ah?"
             className={styles.searchField}
@@ -300,18 +321,27 @@ function App() {
           </Button>
         </Grid>
       </form>
-      <Grid container spacing={2} style={{ marginTop: "5px" }} justify="center">
+      <Grid container spacing={2} justify="center">
         <Grid item xs={9}>
+          <Grid item container justify="space-between" style={{marginBottom: "10px", marginTop: "10px"}}>
+          {props.location.state ? (
+            <Typography variant="h6">Search results for: {props.location.state.query_string}</Typography>
+          ) : null}
+          <Typography variant="h6">{queryTime ? `Query time: ${queryTime} seconds` : null}</Typography>
+          </Grid>
           <Grid
             style={{ maxHeight: window.outerHeight - 150, overflow: "auto" }}
           >
-            {!reviews ? (
+            {reviews == null ? null : reviews.length == 0 ? (
               <Typography align="center">
                 {" "}
                 Our Database does not have what you need :({" "}
               </Typography>
             ) : (
+              <div>
+                
               <ReviewList reviews={reviews} products={products} />
+              </div>
             )}
           </Grid>
         </Grid>

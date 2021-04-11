@@ -2,10 +2,7 @@ import React from "react";
 import axios from "axios";
 import LanguageDetect from "languagedetect";
 import { useEffect } from "react";
-import {
-  Grid,
-  Divider
-} from "@material-ui/core";
+import { Grid, Divider } from "@material-ui/core";
 
 var isSupported = (function isSupported() {
   var canvas = document.createElement("canvas");
@@ -1426,12 +1423,7 @@ export default function WordcloudComponent(props) {
     //   {canvas.map((item) => item)}
     // </div>
     <Grid container spacing={2} style={{ margin: "5px" }} justify="center">
-      <canvas
-        id="canvas"
-        className="canvas"
-        width="1400px"
-        height="300px"
-      />
+      <canvas id="canvas" className="canvas" width="1400px" height="300px" />
     </Grid>
   );
 }
