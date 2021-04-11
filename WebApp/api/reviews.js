@@ -9,9 +9,6 @@ const solrClient = new SolrNode({
   protocol: "http",
 });
 
-// .start(1)
-// .rows(1)
-
 router.post("/update", (req, res) => {
   var params = req.params;
   var body = req.body;
@@ -27,9 +24,6 @@ router.post("/update", (req, res) => {
 });
 
 router.post("/:id", (req, res) => {
-  // const genderQuery = {
-  //     gender: query,
-  //   };
   // Build a search query var
   var query = req.params.id.replace(" ", "+");
   console.log(query);
@@ -52,16 +46,7 @@ router.post("/:id", (req, res) => {
       console.log(err);
       return;
     }
-
     const response = result.response;
-    // console.log("Result: ", response);
-
-    // if (response && response.docs) {
-    //   console.log(response.docs.length);
-    // response.docs.forEach((doc, idx) => {
-    //   console.log(doc);
-    // });
-    // }
     return res.status(200).json(response.docs);
   });
 });

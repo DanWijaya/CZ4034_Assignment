@@ -1,6 +1,7 @@
 import React from "react";
-
+import PropTypes from 'prop-types';
 import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {
@@ -17,6 +18,11 @@ import {
 import Rating from "@material-ui/lab/Rating";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
 import WordcloudComponent from "./WordcloudComponent";
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
+import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,6 +43,47 @@ const useStyles = makeStyles((theme) => ({
   //   height: theme.spacing(70),
   // },
 }));
+
+const StyledRating = withStyles({
+  iconFilled: {
+    color: '#394e2c',
+  },
+  iconHover: {
+    color: "#394e2c"
+  },
+})(Rating);
+
+const customIcons = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon />,
+    label: 'Very Dissatisfied',
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon />,
+    label: 'Neutral',
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon />,
+    label: 'Satisfied',
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon />,
+    label: 'Very Satisfied',
+  },
+};
+
+function IconContainer(props) {
+  const { value, ...other } = props;
+  return <span {...other}r>{customIcons[value].icon}</span>;
+}
+
+IconContainer.propTypes = {
+  value: PropTypes.number.isRequired,
+};
 
 export default function ProductPage(props) {
   const [_product, setProduct] = React.useState(null);
@@ -98,7 +145,7 @@ export default function ProductPage(props) {
               {_product.avg_rating != -1 ? (
                 <Rating
                   readOnly
-                  defaultValue={parseInt(_product.avg_rating[0])}
+                  defaultValue={_product.avg_rating[0]}
                   precision={0.1}
                   emptyIcon={<StarBorderIcon fontSize="inherit" />}
                 />
@@ -121,8 +168,20 @@ export default function ProductPage(props) {
             direction="column"
           >
             <Grid item>
-              <Typography>Customer Reviews</Typography>
+              <Typography variant="h5"><b>Customer Reviews</b></Typography>
             </Grid>
+            <Grid item container alignItems="center" justify="center">
+            <Typography variant="h6">Sentiment Score: </Typography>
+            <StyledRating
+              name="customized-icons"
+              value={_product.semantic_score * 5}
+              getLabelText={(value) => customIcons[value].label}
+              IconContainerComponent={IconContainer}
+              readOnly
+            />
+            <Typography style={{marginLeft: "5px"}} variant="h6">{parseFloat(_product.semantic_score*100).toFixed(2)}%</Typography>
+            </Grid>
+              {/* <Typography variant="h6"> </Typography> */}
             <Grid item container spacing={2} direction="column">
               <Grid item>
                 <Paper variant="outlined" className={classes.itemPaper}>
@@ -135,7 +194,7 @@ export default function ProductPage(props) {
                   >
                     <WordcloudComponent
                       product={_product_id}
-                    ></WordcloudComponent>
+                    />
                   </Grid>
                 </Paper>
               </Grid>
@@ -174,6 +233,22 @@ export default function ProductPage(props) {
                         <Grid item>
                           <b>Upvotes: </b>
                           {r.upvotes}
+                        </Grid>
+                        <Grid item>
+                          <b>Vader Polarity: </b>
+                          {parseFloat(r.vader_polarity*100).toFixed(2)}%
+                        </Grid>
+                        <Grid item>
+                          <b>BiLSTM Polarity: </b>
+                          {parseFloat(r.BiLSTM_polarity*100).toFixed(2)}%
+                        </Grid>
+                        <Grid item>
+                          <b>BERT Polarity: </b>
+                          {parseFloat(r.BERT_polarity*100).toFixed(2)}%
+                        </Grid>
+                        <Grid item>
+                          <b>Average Polarity: </b>
+                          {parseFloat(r.average_score*100).toFixed(2)}%
                         </Grid>
                       </Grid>
                     </Paper>

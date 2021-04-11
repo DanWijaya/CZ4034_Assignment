@@ -3,4 +3,5 @@
 */.DS_Store
 .idea
 */.idea
+Crawling/generate_review_table.py
 WebApp/package-lock.json

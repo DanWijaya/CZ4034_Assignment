@@ -23,7 +23,6 @@ import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SearchIcon from "@material-ui/icons/Search";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
-import timediff from "timediff";
 
 // import {SentimentVeryDissatisfiedIcon, SentimentDissatisfiedIcon, SentimentSatisfiedIcon, SentimentSatisfiedAltIcon, SentimentVerySatisfiedIcon} from '@material-ui/icons';
 
@@ -176,7 +175,7 @@ function App(props) {
         setProduct(new Map());
       } else {
         let data = new Map();
-        res.data.forEach((r) => data.set(r._product_id[0], r));
+        res.data.forEach((r) => data.set(r.product_id[0], r));
         setProduct(data);
       }
     });

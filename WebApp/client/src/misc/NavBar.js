@@ -16,7 +16,7 @@ export default function NavBar() {
       }}
     >
       <Typography style={{ marginLeft: "30px" }}>
-        Welcome to Amazon Reviews app
+        Welcome to Amazonics
       </Typography>
     </AppBar>
   );
