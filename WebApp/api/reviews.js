@@ -12,6 +12,20 @@ const solrClient = new SolrNode({
 // .start(1)
 // .rows(1)
 
+router.post("/update", (req, res) => {
+  var params = req.params;
+  var body = req.body;
+
+  solrClient.update(body, function (err, result) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log(body);
+    console.log("Response:", result.responseHeader);
+  });
+});
+
 router.post("/:id", (req, res) => {
   // const genderQuery = {
   //     gender: query,
@@ -26,6 +40,10 @@ router.post("/:id", (req, res) => {
       wt: "json",
       indent: true,
     })
+    .sort({
+      click_counts:"desc",
+      score: "desc",
+      })
     .start(0)
     .rows(50);
 

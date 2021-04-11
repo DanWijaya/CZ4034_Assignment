@@ -125,6 +125,24 @@ function App() {
     query = e.target.value;
   };
 
+  const incrementCounts = (e, idx) => {
+    console.log(idx);
+    console.log(e);
+    var reivew_id = document
+      .getElementById(`grid-${idx}`)
+      .getAttribute("review_id");
+
+    var body = {
+      id: reivew_id,
+      click_counts: { inc: 1 },
+    };
+
+    // console.log(body);
+    axios.post(`/api/reviews/update`, body).then((res) => {
+      console.log(res);
+    });
+  };
+
   const handleClearQuery = (e) => {
     query = "";
   };
@@ -139,7 +157,6 @@ function App() {
         setProduct(new Map());
       } else {
         let data = new Map();
-        console.log(res.data);
         res.data.forEach((r) => data.set(r._product_id[0], r));
         setProduct(data);
       }
@@ -184,10 +201,14 @@ function App() {
 
     return reviews.map((item, idx) => {
       let product_id = item.product_id[0];
-      console.log(product_id);
       return (
         <Link to={`/${item.product_id}`} className={styles.linkText}>
-          <Grid item>
+          <Grid
+            id={`grid-${idx}`}
+            item
+            onClick={(e) => incrementCounts(e, idx)}
+            review_id={item.id}
+          >
             <Paper variant="outlined" className={styles.itemPaper}>
               <Grid item xs={2}>
                 <Grid container justify="center">
