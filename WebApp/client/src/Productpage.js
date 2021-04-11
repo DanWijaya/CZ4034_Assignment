@@ -44,7 +44,6 @@ export default function ProductPage(props) {
 
   const { _product_id } = props.match.params;
   React.useEffect(() => {
-    console.log("SDSD");
     axios.post(`/api/products/${_product_id}`).then((response) => {
       console.log(response.data);
       setProduct(response.data[0]);
