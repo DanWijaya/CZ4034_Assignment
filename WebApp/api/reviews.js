@@ -40,9 +40,9 @@ router.post("/:id", (req, res) => {
 
     // if (response && response.docs) {
     //   console.log(response.docs.length);
-      // response.docs.forEach((doc, idx) => {
-      //   console.log(doc);
-      // });
+    // response.docs.forEach((doc, idx) => {
+    //   console.log(doc);
+    // });
     // }
     return res.status(200).json(response.docs);
   });
