@@ -41,9 +41,9 @@ router.post("/:id", (req, res) => {
       indent: true,
     })
     .sort({
-      click_counts:"desc",
+      click_counts: "desc",
       score: "desc",
-      })
+    })
     .start(0)
     .rows(50);
 

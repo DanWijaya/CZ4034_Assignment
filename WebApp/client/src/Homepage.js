@@ -139,28 +139,20 @@ function App(props) {
       click_counts: { inc: 1 },
     };
 
-    // console.log(body);
     axios.post(`/api/reviews/update`, body).then((res) => {
       console.log(res);
     });
   };
 
-  const handleClearQuery = (e) => {
-    query = "";
-  };
-
-  const handleCategory = (cat) => () => {
-    setCategory(cat);
-  };
   const history = useHistory();
   function getDifferenceInSeconds(date1, date2) {
     const diffInMs = Math.abs(date2 - date1);
-    console.log(date1, date2)
+    console.log(date1, date2);
     return diffInMs / 1000;
   }
 
   const onSubmit = (e) => {
-    var starttime = new Date()
+    var starttime = new Date();
     e.preventDefault();
     if (query) {
       axios.post(`/api/reviews/${query}`).then((res) => {
@@ -172,9 +164,9 @@ function App(props) {
             query_string: query,
           },
         });
-        var endtime = new Date()
-        setQueryTime(getDifferenceInSeconds(starttime, endtime))
-      })
+        var endtime = new Date();
+        setQueryTime(getDifferenceInSeconds(starttime, endtime));
+      });
     }
   };
 
@@ -188,8 +180,8 @@ function App(props) {
         setProduct(data);
       }
     });
-  },[])
-  
+  }, []);
+
   React.useEffect(() => {
     if (props.match.params.query_string && props.location.state) {
       setReview(props.location.state.reviews);
@@ -345,11 +337,20 @@ function App(props) {
       </form>
       <Grid container spacing={2} justify="center">
         <Grid item xs={9}>
-          <Grid item container justify="space-between" style={{marginBottom: "10px", marginTop: "10px"}}>
-          {props.location.state ? (
-            <Typography variant="h6">Search results for: {props.location.state.query_string}</Typography>
-          ) : null}
-          <Typography variant="h6">{queryTime ? `Query time: ${queryTime} seconds` : null}</Typography>
+          <Grid
+            item
+            container
+            justify="space-between"
+            style={{ marginBottom: "10px", marginTop: "10px" }}
+          >
+            {props.location.state ? (
+              <Typography variant="h6">
+                Search results for: {props.location.state.query_string}
+              </Typography>
+            ) : null}
+            <Typography variant="h6">
+              {queryTime ? `Query time: ${queryTime} seconds` : null}
+            </Typography>
           </Grid>
           <Grid
             style={{ maxHeight: window.outerHeight - 150, overflow: "auto" }}
@@ -361,8 +362,7 @@ function App(props) {
               </Typography>
             ) : (
               <div>
-                
-              <ReviewList reviews={reviews} products={products} />
+                <ReviewList reviews={reviews} products={products} />
               </div>
             )}
           </Grid>
