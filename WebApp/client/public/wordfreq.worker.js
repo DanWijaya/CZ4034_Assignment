@@ -152,7 +152,7 @@
       "cjk",
       "english1",
       "english2",
-      "spacy"
+      "spacy",
     ];
 
     if (!Array.isArray(options.stopWords)) {
@@ -251,10 +251,11 @@
           ]);
           break;
 
-          case "spacy":
-            options.stopWords = options.stopWords.concat(
+        case "spacy":
+          options.stopWords = options.stopWords.concat(
             `
-            phone 
+            phone headphone laptop television monitor keyboard router printer data storage speaker
+            headphones 
             a about above across after afterwards again against all almost alone along 
             already also although always am among amongst amount an and another any anyhow 
             anyone anything anyway anywhere are around as at 
@@ -294,7 +295,7 @@
             whereafter whereas whereby wherein whereupon wherever whether which while 
             whither who whoever whole whom whose why will with within without would 
             yet you your yours yourself yourselves`.split(" ")
-            )
+          );
       }
     });
 

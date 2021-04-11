@@ -19,7 +19,6 @@ function App() {
         <NavBar />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route exact path="/word/:product_id" component={WordcloudComponent} />
           <Route exact path="/:_product_id" component={ProductPage} />
         </Switch>
       </Router>

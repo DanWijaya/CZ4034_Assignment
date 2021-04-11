@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import StarBorderIcon from "@material-ui/icons/StarBorderOutlined";
+import WordcloudComponent from "./WordcloudComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,7 +68,10 @@ export default function ProductPage(props) {
       <div className={classes.root}>
         <Grid container justify="center" className={classes.contents}>
           <Grid item>
-            <img src={_product.image} style={{maxHeight: "300px", maxWidth: "300px"}} />
+            <img
+              src={_product.image}
+              style={{ maxHeight: "300px", maxWidth: "300px" }}
+            />
           </Grid>
         </Grid>
         <Grid container direction="column" alignItems="center" spacing={2}>
@@ -91,7 +95,7 @@ export default function ProductPage(props) {
               style={{ maxHeight: window.outerHeight - 150, overflow: "auto" }}
             >
               {/* <Grid item container> */}
-              <Typography>Rating: </Typography>
+              <Typography>Average Rating: </Typography>
               {_product.avg_rating != -1 ? (
                 <Rating
                   readOnly
@@ -121,21 +125,55 @@ export default function ProductPage(props) {
               <Typography>Customer Reviews</Typography>
             </Grid>
             <Grid item container spacing={2} direction="column">
+            <Grid item>
+                    <Paper variant="outlined" className={classes.itemPaper}>
+                      <Grid
+                        item
+                        container
+                        direction="column"
+                        spacing={2}
+                        style={{ padding: "20px" }}
+                      >
+                        <WordcloudComponent product={_product_id}></WordcloudComponent>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+            </Grid>
+            {/* <Typography>Word Cloud</Typography> */}
+            <Grid item container spacing={2} direction="column">
               {_reviews.map((r) => {
                 return (
                   <Grid item>
                     <Paper variant="outlined" className={classes.itemPaper}>
-                      <Grid item container direction="column" spacing={2} style={{padding: "20px"}}>
+                      <Grid
+                        item
+                        container
+                        direction="column"
+                        spacing={2}
+                        style={{ padding: "20px" }}
+                      >
+                        <Grid item>
+                          <b>User Name: </b>
+                          {r.uname}
+                        </Grid>
+                        <Grid item>
+                          <b>Review Title:</b> {r.review_title}
+                        </Grid>
+                        <Grid item>
+                          <b>Review Description:</b> {r.review}
+                        </Grid>
                         {r.image ? (
                           <Grid item>
                             <img src={r.image} />
                           </Grid>
                         ) : null}
-                        <Grid item><b>User Name: </b>{r.uname}</Grid>
-                        <Grid item><b>Review Title:</b> {r.review_title}</Grid>
-                        <Grid item><b>Review:</b> {r.review}</Grid>
-                        <Grid item><b>Review Date:</b> {Date(r.date)}</Grid>
-                        <Grid item><b>Upvotes: </b>{r.upvotes}</Grid>
+                        <Grid item>
+                          <b>Review Date:</b> {Date(r.date)}
+                        </Grid>
+                        <Grid item>
+                          <b>Upvotes: </b>
+                          {r.upvotes}
+                        </Grid>
                       </Grid>
                     </Paper>
                   </Grid>

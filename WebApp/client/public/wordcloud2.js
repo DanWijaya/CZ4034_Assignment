@@ -183,8 +183,8 @@ if (!window.clearImmediate) {
 
   var timer;
   var WordCloud = function WordCloud(elements, options, resolve) {
-    console.log("ELEMENTS", elements)
-    console.log("OPTIONS", options)
+    console.log("ELEMENTS", elements);
+    console.log("OPTIONS", options);
     if (!isSupported) {
       return;
     }

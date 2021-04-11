@@ -19,31 +19,29 @@ function getAllReviewsById(product_id) {
     console.log(result);
 
     const reviewTitles = [];
-  const reviews = [];
+    const reviews = [];
 
-  const lngDetector = new LanguageDetect();
+    const lngDetector = new LanguageDetect();
 
-  result.map((record) => {
-    // reviewTitles.push(record.review_title[0]);
-    // reviews.push(record.review[0]);
-    const langugage = lngDetector.detect(record.review[0], 1);
-    if (langugage && langugage[0] && langugage[0][0] == "english") {
-      reviews.push(record.review[0]);
-    }
+    result.map((record) => {
+      // reviewTitles.push(record.review_title[0]);
+      // reviews.push(record.review[0]);
+      const langugage = lngDetector.detect(record.review[0], 1);
+      if (langugage && langugage[0] && langugage[0][0] == "english") {
+        reviews.push(record.review[0]);
+      }
+    });
+    const corpus = reviews.join(" ");
+    // console.log(corpus);
+    console.log("fnkjdf");
+    return corpus;
   });
-  const corpus = reviews.join(" ");
-  // console.log(corpus);
-  console.log("fnkjdf");
-  return corpus;
-  });
-
-  
 }
 
 export default function Wordcloud(props) {
   // Promise((resolve, reject) => {
   var { product_id } = props.match.params;
-  const [canvas,setCanvas] = React.useState([]);
+  const [canvas, setCanvas] = React.useState([]);
   useEffect(() => {
     var urls = ["wordfreq.js", "wordfreq.worker.js", "wordcloud2.js"];
     new Promise((resolve) => {
@@ -64,13 +62,17 @@ export default function Wordcloud(props) {
       var wordlist = [];
       getAllReviewsById(product_id).then((corpus) => {
         var wordfreq = window.WordFreq();
-        wordfreq.process(corpus, (result) => {
-          wordlist = result;
-        }).getList((list) => {
-          new Promise((resolve) => {
-            window.WordCloud(document.getElementById("canvas", { list: list }, resolve))
-          }).then(() => setCanvas(list))
-        });
+        wordfreq
+          .process(corpus, (result) => {
+            wordlist = result;
+          })
+          .getList((list) => {
+            new Promise((resolve) => {
+              window.WordCloud(
+                document.getElementById("canvas", { list: list }, resolve)
+              );
+            }).then(() => setCanvas(list));
+          });
       });
     });
   }, []);
@@ -83,7 +85,7 @@ export default function Wordcloud(props) {
     // <div style={{marginTop: "100px"}}>
     //   {canvas.map((item) => item)}
     // </div>
-    <div style={{marginTop: "100px"}}>
+    <div style={{ marginTop: "100px" }}>
       <canvas
         id="canvas"
         className="canvas"
@@ -92,6 +94,5 @@ export default function Wordcloud(props) {
         style={{ width: "1170px", height: "760px" }}
       />
     </div>
-  
   );
 }
