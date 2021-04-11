@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { resolveConfig } from "prettier";
 
 function getAllReviewsById(product_id) {
-  console.log("SDSD");
   const data = { id: product_id };
   var result = [];
 

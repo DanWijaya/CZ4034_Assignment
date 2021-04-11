@@ -254,7 +254,7 @@
         case "spacy":
           options.stopWords = options.stopWords.concat(
             `
-            phone headphone laptop television monitor keyboard router printer data storage speaker
+            phone headphone laptop television monitor keyboard router printer data storage speaker 
             headphones 
             a about above across after afterwards again against all almost alone along 
             already also although always am among amongst amount an and another any anyhow 

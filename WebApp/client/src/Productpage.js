@@ -44,7 +44,6 @@ export default function ProductPage(props) {
 
   const { _product_id } = props.match.params;
   React.useEffect(() => {
-    console.log("SDSD");
     axios.post(`/api/products/${_product_id}`).then((response) => {
       console.log(response.data);
       setProduct(response.data[0]);
@@ -125,19 +124,21 @@ export default function ProductPage(props) {
               <Typography>Customer Reviews</Typography>
             </Grid>
             <Grid item container spacing={2} direction="column">
-            <Grid item>
-                    <Paper variant="outlined" className={classes.itemPaper}>
-                      <Grid
-                        item
-                        container
-                        direction="column"
-                        spacing={2}
-                        style={{ padding: "20px" }}
-                      >
-                        <WordcloudComponent product={_product_id}></WordcloudComponent>
-                      </Grid>
-                    </Paper>
+              <Grid item>
+                <Paper variant="outlined" className={classes.itemPaper}>
+                  <Grid
+                    item
+                    container
+                    direction="column"
+                    spacing={2}
+                    style={{ padding: "20px" }}
+                  >
+                    <WordcloudComponent
+                      product={_product_id}
+                    ></WordcloudComponent>
                   </Grid>
+                </Paper>
+              </Grid>
             </Grid>
             {/* <Typography>Word Cloud</Typography> */}
             <Grid item container spacing={2} direction="column">
